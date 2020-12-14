@@ -139,7 +139,7 @@ module ActiveRecord
       def build_with(arel)
         with_statements = with_values.flat_map do |with_value|
           case with_value
-          when String
+          when String, Arel::Nodes::TableAlias
             with_value
           when Hash
             with_value.map  do |name, expression|
@@ -150,10 +150,18 @@ module ActiveRecord
                 select = Arel::Nodes::SqlLiteral.new build_expression(with_value, expression.to_sql)
               end
 
-              Arel::Nodes::As.new Arel::Nodes::SqlLiteral.new(PG::Connection.quote_ident(name.to_s)), select
+              if ActiveRecord.version >= Gem::Version.new('6.1')
+                Arel::Nodes::TableAlias.new(Arel.sql(select), Arel.sql(connection.quote_column_name(name.to_s)))
+              else
+                Arel::Nodes::As.new Arel::Nodes::SqlLiteral.new(PG::Connection.quote_ident(name.to_s)), select
+              end
             end
           when Arel::Nodes::As
-            with_value
+            if ActiveRecord.version >= Gem::Version.new('6.1')
+              Arel::Nodes::TableAlias.new(Arel.sql(with_value.right), Arel.sql(with_value.left))
+            else
+              with_value
+            end
           end
         end
 
