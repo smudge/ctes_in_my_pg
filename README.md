@@ -64,7 +64,7 @@ Starting with PostgreSQL 12 and above, you can specify `MATERIALIZED` and `NOT M
 
 ```ruby
 Foo.with.materialized(this_is_materialized: Foo.my_scope)
-  .with_not_materialized(this_is_not_materialized: Foo.another_scope)
+  .with.not_materialized(this_is_not_materialized: Foo.another_scope)
 ```
 
 When using PostgreSQL 12 and above, `MATERIALIZED` and `NOT MATERIALIZED` will be added to the CTEs. In the case of versions of PostgreSQL prior to 12, no specifiers will be added, as those keywords did not exist and all CTEs were materialized by default.
