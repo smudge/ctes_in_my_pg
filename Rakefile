@@ -7,7 +7,13 @@ Rake::TestTask.new(:test) do |t|
   t.test_files = FileList['test/**/*_test.rb']
 end
 
-task :default => :test
+if ENV['APPRAISAL_INITIALIZED'] || ENV['CI']
+  task default: :test
+else
+  require 'appraisal'
+  Appraisal::Task.new
+  task default: :appraisal
+end
 
 namespace :db do
   task :load_db_settings do
