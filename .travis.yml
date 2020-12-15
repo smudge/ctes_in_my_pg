@@ -12,6 +12,10 @@ addons:
     packages:
       - postgresql-12
       - postgresql-client-12
+env:
+  global:
+    - PGUSER=postgres
+    - PGPORT=5432
 gemfile:
   - gemfiles/rails_5_2.gemfile
   - gemfiles/rails_6_0.gemfile
