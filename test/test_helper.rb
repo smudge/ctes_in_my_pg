@@ -13,7 +13,9 @@ require 'byebug'
 require 'dotenv'
 Dotenv.load
 
-ActiveRecord::Base.establish_connection(ENV['DATABASE_URL'])
+ActiveRecord::Base.establish_connection(
+  ENV.fetch('DATABASE_URL', 'postgres://postgres@localhost/ctes_in_my_pg')
+)
 
 class Person < ActiveRecord::Base
   has_many :hm_tags, class_name: 'Tag'

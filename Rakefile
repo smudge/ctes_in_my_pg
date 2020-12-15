@@ -25,11 +25,11 @@ namespace :db do
   end
 
   task :drop => :load_db_settings do
-    %x{ dropdb #{ENV['DATABASE_NAME']} }
+    %x{ dropdb #{ENV.fetch('DATABASE_NAME', 'ctes_in_my_pg')} }
   end
 
   task :create => :load_db_settings do
-    %x{ createdb #{ENV['DATABASE_NAME']} }
+    %x{ createdb #{ENV.fetch('DATABASE_NAME', 'ctes_in_my_pg')} }
   end
 
   task :migrate => :load_db_settings do
