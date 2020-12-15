@@ -6,8 +6,8 @@ rvm:
   - 2.5
   - 2.6
   - 2.7
-before_install: gem install bundler -v 1.12.5
-
+services:
+  - postgresql
 gemfile:
   - gemfiles/rails_5_2.gemfile
   - gemfiles/rails_6_0.gemfile
